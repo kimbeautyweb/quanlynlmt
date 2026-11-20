@@ -253,7 +253,12 @@ input.pin{width:130px}
 .paper table.lt2 tr.sum td{background:#dbe7fa!important;color:#0f2a5c!important;font-weight:700}
 .paper .sign{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;text-align:center;font-weight:600;color:#14301f}
 .paper .sign div{height:96px}.paper .sign i{font-weight:400;color:#667a70;font-size:10.5px}
-@media (max-width:640px){#sheet .paper .pcards{grid-template-columns:1fr}#sheet .paper .ph{flex-wrap:wrap}#sheet .paper .pt{text-align:left}#sheet .paper .pb{font-size:18px}}
+.paper .pst{display:grid;grid-template-columns:1.5fr 1fr 1.3fr;gap:10px;margin-top:10px}
+.paper .pst>div{border:1px solid #cfe5d6;background:#eaf6ee;border-radius:8px;padding:7px 10px;color:#14301f}
+.paper .pst span{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#4d6b5b;font-weight:700}
+.paper .pst b{font-size:13px;color:#0f6b36}
+.paper .pnote{font-size:10px;color:#667a70;margin-top:4px}
+@media (max-width:640px){#sheet .paper .pst{grid-template-columns:1fr}#sheet .paper .pcards{grid-template-columns:1fr}#sheet .paper .ph{flex-wrap:wrap}#sheet .paper .pt{text-align:left}#sheet .paper .pb{font-size:18px}}
 @media print{@page{size:A4;margin:14mm}body{background:#fff}body::before,.top,.app,.mbar,.sbar{display:none!important}#sheet{position:static;overflow:visible;background:#fff;padding:0}.paper{margin:0;padding:0;max-width:none;border-radius:0}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -497,7 +502,7 @@ function build(mode){
   const cs=int?5:3,tr=(l,v,c)=>`<tr class="${c||''}"><td colspan="${cs}" class="r">${l}</td><td class="r">${v}</td></tr>`;
   let h=`<div class="ph"><div><div class="co">${esc(co.name)}</div><div class="cs">${esc(co.addr)}${co.phone?(co.addr?' · ':'')+'ĐT: '+esc(co.phone):''}</div></div><div class="pt"><div class="pb">BÁO GIÁ</div><div class="pd">Ngày ${d}</div>${int?'<span class="tag">BẢN NỘI BỘ · KHÔNG GỬI KHÁCH</span>':''}</div></div>
   <div class="ptitle">BÁO GIÁ HỆ THỐNG ĐIỆN NĂNG LƯỢNG MẶT TRỜI</div>
-  <div class="pcards"><div class="pc"><div class="pl">KHÁCH HÀNG</div><b>${esc($('#ti').value)} ${esc($('#cn').value||'-')}</b><div>ĐT: ${esc($('#cp').value||'-')}</div><div>Địa chỉ: ${esc($('#ca').value||'-')}</div></div><div class="pc"><div class="pl">CẤU HÌNH HỆ THỐNG</div><b>${nf(t.cur)} kWp</b><div>${S.ph} pha · ${S.gr==='g'?'Hòa lưới':'Hybrid'}</div><div>${pinOn()?(S.vo==='l'?'Pin lưu trữ áp thấp':'Pin lưu trữ áp cao'):'Không pin lưu trữ'}</div></div></div>
+  <div class="pcards"><div class="pc"><div class="pl">KHÁCH HÀNG</div><b>${esc($('#ti').value)} ${esc($('#cn').value||'-')}</b><div>ĐT: ${esc($('#cp').value||'-')}</div><div>Địa chỉ: ${esc($('#ca').value||'-')}</div></div><div class="pc"><div class="pl">CẤU HÌNH HỆ THỐNG</div><b>${nf(t.cur)} kWp</b><div>${S.ph} pha · ${S.gr==='g'?'Hòa lưới':'Hybrid'}</div><div>${pinOn()?(S.vo==='l'?'Pin lưu trữ áp thấp':'Pin lưu trữ áp cao'):'Không pin lưu trữ'}</div></div></div>${t.cur>0?`<div class="pst"><div><span>Tiết kiệm</span><b>${esc($('#sv').textContent)}/tháng</b></div><div><span>Hoàn vốn</span><b>${esc($('#pb').textContent)}</b></div><div><span>Mái</span><b>${esc($('#rf').textContent)}</b></div></div><div class="pnote">Số liệu ước tính, thực tế phụ thuộc điều kiện nắng, mức tiêu thụ và giá điện.</div>`:''}
   <h3>Chi tiết báo giá</h3><div class="tw"><table class="${int?'wide':''}"><tr>${head}</tr>${rows}${tr('TẠM TÍNH',fmt(t.sub),'tot')}${S.vat>0?tr(`VAT (${nf(S.vat)}%)`,fmt(t.vat),'tot'):''}${tr('TỔNG SAU THUẾ',fmt(t.grand),'grand')}</table></div>`;
   if(int)h+=`<h3>Tổng hợp chênh lệch giá</h3><table><tr><td>Tạm tính theo giá hệ thống</td><td class="r">${fmt(t.sub-diff)}</td></tr><tr><td>Tạm tính theo giá đã chỉnh</td><td class="r">${fmt(t.sub)}</td></tr>
    <tr class="diff"><td>Tổng chênh lệch (đã chỉnh − giá hệ thống)</td><td class="r ${diff>=0?'up':'dn'}">${diff>0?'+':''}${fmt(diff)}</td></tr></table>`;
@@ -532,7 +537,7 @@ async function exportPdf(){
     if(document.fonts&&document.fonts.ready)await document.fonts.ready;
     const sc=1.5,cv=await html2canvas(src,{scale:sc,backgroundColor:'#ffffff',useCORS:true,windowWidth:794,scrollX:0,scrollY:0});
     const base=src.getBoundingClientRect().top;
-    const cands=[...src.querySelectorAll('tr,p,.ph,.pcards,.sign')].filter(e=>!(e.tagName==='TR'&&e.querySelector('th'))).map(e=>Math.round((e.getBoundingClientRect().bottom-base)*sc)).sort((a,b)=>a-b);
+    const cands=[...src.querySelectorAll('tr,p,.ph,.pcards,.pst,.sign')].filter(e=>!(e.tagName==='TR'&&e.querySelector('th'))).map(e=>Math.round((e.getBoundingClientRect().bottom-base)*sc)).sort((a,b)=>a-b);
     const {jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4',compress:true});
     const W=cv.width,H=cv.height,pxmm=W/198,pageH=Math.floor(285*pxmm);let y=0,first=true;
     while(y<H-2){let end=Math.min(H,y+pageH);

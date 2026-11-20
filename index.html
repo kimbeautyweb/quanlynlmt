@@ -207,6 +207,23 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
  .paper h1{font-size:15px}.paper h3{font-size:12px;margin-top:12px}.paper .meta{flex-direction:column;gap:6px}
  .paper th,.paper td{padding:3px 4px;font-size:10px}.paper table.wide{min-width:560px}
  .sbar{padding:8px 10px}.sbar .btn{padding:8px 12px;font-size:13px}.mseg button{padding:6px 11px;font-size:13px}}
+/* ===== Số đầy đủ, bảng trả nợ ===== */
+input.pin{width:130px}
+
+.lt2{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
+.lt2 th{background:#2b6cd0;color:#fff;font-weight:600;padding:5px 6px;border:1px solid #2b6cd0;text-align:left;vertical-align:middle}
+.lt2 th.r{white-space:normal}.lt2 .r{text-align:right;white-space:nowrap}
+.lt2 td{padding:4px 6px;border:1px solid var(--line)}.lt2 tr.sum td{font-weight:700;background:var(--bg2)}
+.paper .lt2 th{background:#2b6cd0;color:#fff}.paper .lt2 td{border-color:#bbb}.paper .lt2 tr.sum td{background:#e8f0fc}
+.dt summary{cursor:pointer;color:var(--green);font-size:13px;padding:2px 0 8px 46px}.dt .tw{margin:0 0 8px}
+.lp small{display:block}
+@media (max-width:640px){
+ 
+ .ln{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-areas:"t m m" ". a b";gap:2px 10px;align-items:start}
+ .ln i{grid-area:t}.ln .lm{grid-area:m}.ln .lp.a{grid-area:a}.ln .lp.b{grid-area:b}.ln .lp{text-align:left}
+ .dt summary{padding-left:0;font-size:12px}.lt2{font-size:10.5px}.lt2 th,.lt2 td{padding:3px 4px}
+}
+@media print{.paper tr{break-inside:avoid}.paper h3{break-after:avoid}}
 @media print{@page{size:A4;margin:14mm}body{background:#fff}body::before,.top,.app,.mbar,.sbar{display:none!important}#sheet{position:static;overflow:visible;background:#fff;padding:0}.paper{margin:0;padding:0;max-width:none;border-radius:0}}
 </style>
 </head>
@@ -250,8 +267,8 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
     <h2>Phương án trả góp</h2>
     <div style="display:flex;gap:14px;margin:-4px 0 4px"><button class="lnk" id="lAll">Bật tất cả</button><button class="lnk" id="lNone">Tắt tất cả</button></div>
     <div class="grid">
-      <div><label class="l" for="ld">Trả trước (%)</label><input class="fld" id="ld" type="number" min="0" max="100" value="30"></div>
-      <div><label class="l" for="lt">Kỳ hạn (tháng)</label><select class="fld" id="lt"><option>12</option><option>24</option><option selected>36</option><option>48</option><option>60</option></select></div>
+      <div><label class="l" for="ld">Tỷ lệ vay mong muốn (%)</label><input class="fld" id="ld" type="number" min="1" max="100" placeholder="Tối đa theo từng đơn vị"></div>
+      <div><label class="l" for="lt">Kỳ hạn vay</label><select class="fld" id="lt"><option value="12">12 tháng (1 năm)</option><option value="24">24 tháng (2 năm)</option><option value="36" selected>36 tháng (3 năm)</option><option value="48">48 tháng (4 năm)</option><option value="60">60 tháng (5 năm)</option><option value="84">84 tháng (7 năm)</option><option value="96">96 tháng (8 năm)</option><option value="120">120 tháng (10 năm)</option><option value="180">180 tháng (15 năm)</option><option value="240">240 tháng (20 năm)</option></select></div>
     </div>
     <div id="ins"></div>
   </section>
@@ -285,8 +302,11 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
 <script>
 const $=s=>document.querySelector(s);
 const nf=(n,d=2)=>(+n||0).toLocaleString('vi-VN',{maximumFractionDigits:d});
-const fmt=n=>Math.round(n||0).toLocaleString('vi-VN')+' đ';
+const dots=n=>{n=Math.round(+n||0);return (n<0?'-':'')+String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');};
+const undot=v=>+String(v||'').replace(/\D/g,'')||0;
+const fmt=n=>dots(n)+' đ';
 const sh=n=>{n=Math.round(n||0);if(!n)return '0';return Math.abs(n)>=1e6?nf(n/1e6,1)+' tr':nf(n/1e3,1)+' k';};
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.money!==undefined){const p=t.selectionStart||0,l=t.value.length,n=undot(t.value);t.value=n?dots(n):'';const q=Math.max(0,p+t.value.length-l);try{t.setSelectionRange(q,q);}catch(x){}}},true);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const P=(a,ph,g,v)=>a.map(x=>({n:x[0],p:x[1],ph:x[2]||ph||'',g:x[3]||g||'',v:x[4]||v||'',w:x[5]||0}));
 const DEFCALC={kwh:120,price:2500,m2lo:3.4,m2hi:4,small:5,mid:15,vat:0};
@@ -304,8 +324,8 @@ let CFG={
    ['Deye RW-M6.1 6.14kWh',30000000,'','','h'],['Sungrow SBR128 12.8kWh',78000000,'','','h'],['Huawei LUNA2000 10kWh',85000000,'','','h']])}],
  svc:[{k:'Tủ điện',p:0,u:''},{k:'Vật tư phụ (dây, giá đỡ, ống, thiết bị bảo vệ)',p:0,u:''},{k:'Lắp đặt',p:0,u:'kWp'}],
  zones:[{n:'Nội thành Hà Nội',r:10000},{n:'Ngoại thành Hà Nội',r:12000},{n:'Các tỉnh miền Bắc',r:14000},{n:'Miền Trung',r:16000},{n:'Miền Nam',r:18000}],
- lenders:[{n:'VPBank',rates:[8,10,12],mx:60},{n:'Techcombank',rates:[9,11],mx:60},{n:'TPBank',rates:[10,12],mx:60},{n:'FE Credit',rates:[24],mx:48},{n:'Home Credit',rates:[28],mx:48},{n:'Quỹ / đơn vị khác',rates:[15],mx:60}]};
-const TPL={items:()=>({n:'Sản phẩm mới',p:0,ph:'',g:'',v:'',w:0}),svc:()=>({k:'Hạng mục mới',p:0,u:''}),zones:()=>({n:'Khu vực mới',r:0}),lenders:()=>({n:'Đơn vị mới',rates:[12],mx:60}),cats:()=>({id:'c'+Date.now(),title:'Nhóm vật tư mới',auto:0,qty:1,watt:0,items:[]})};
+ lenders:[{n:'VPBank',lm:80,rates:[8,10,12],mx:84},{n:'Techcombank',lm:80,rates:[9,11],mx:84},{n:'TPBank',lm:70,rates:[10,12],mx:60},{n:'FE Credit',lm:70,rates:[24],mx:48},{n:'Home Credit',lm:70,rates:[28],mx:48},{n:'Quỹ / đơn vị khác',lm:70,rates:[15],mx:60}]};
+const TPL={items:()=>({n:'Sản phẩm mới',p:0,ph:'',g:'',v:'',w:0}),svc:()=>({k:'Hạng mục mới',p:0,u:''}),zones:()=>({n:'Khu vực mới',r:0}),lenders:()=>({n:'Đơn vị mới',lm:80,rates:[12],mx:60}),cats:()=>({id:'c'+Date.now(),title:'Nhóm vật tư mới',auto:0,qty:1,watt:0,items:[]})};
 
 /* ===== Trạng thái ===== */
 const S={ph:'1',gr:'g',vo:'l',bill:2500000,items:[],svc:[],zr:0,km:0,vat:0,vatT:0};let uid=0;
@@ -349,18 +369,21 @@ function totals(){
   const mat=S.items.reduce((a,i)=>a+i.price*i.qty,0),sv=S.svc.reduce((a,s)=>a+s.price*s.qty,0),ship=S.zr*S.km,sub=mat+sv+ship,vat=sub*S.vat/100;
   return{cur,mat,sv,ship,sub,vat,grand:sub+vat};
 }
-function sched(L,n,rates){let bal=L,int=0,pay=0;const pays=[];
-  for(let m=0;m<n;m++){const y=Math.floor(m/12),ra=+rates[Math.min(y,rates.length-1)]||0,r=ra/1200;
-    if(m%12===0){pay=pmt(bal,ra,n-m);pays.push(pay);}
-    const it=bal*r;int+=it;bal-=pay-it;}
-  return{pays,first:pays[0]||0,int,total:L+int};}
+function sched(L,n,rates){const mp=Math.round(L/n);let bal=L,int=0;const years=[];
+  for(let y=0;y*12<n;y++){const m=Math.min(12,n-y*12),ra=+rates[Math.min(y,rates.length-1)]||0,fee=Math.round(bal*ra/1200);
+    years.push({y:y+1,m,prin:mp,fee,pay:mp+fee,ra});int+=fee*m;bal-=L/n*m;}
+  return{years,int,total:L+int,first:years[0].pay};}
 const ratesTxt=r=>(r.every(v=>v===r[0])?nf(r[0])+'%/năm':r.map((v,i)=>`N${i+1}${i===r.length-1?'+':''}: ${nf(v)}%`).join(' · '));
-function insInfo(){const t=totals(),dp=Math.min(100,Math.max(0,+$('#ld').value||0)),n=+$('#lt').value,pre=t.grand*dp/100,loan=t.grand-pre;
-  const list=CFG.lenders.map(x=>{const rates=(x.rates&&x.rates.length?x.rates:[12]).map(Number),ok=n<=(+x.mx||60);return{name:x.n,rates,on:!!S.lon[x.n],ok,s:ok?sched(loan,n,rates):null};});
-  return{dp,n,pre,loan,list};}
+function insInfo(){const t=totals(),n=+$('#lt').value,want=+$('#ld').value||0;
+  const list=CFG.lenders.map(x=>{const rates=(x.rates&&x.rates.length?x.rates:[12]).map(Number),mxp=Math.min(100,+x.lm||80),pct=want>0?Math.min(want,mxp):mxp,mx=+x.mx||60,loan=Math.round(t.grand*pct/100),ok=n<=mx&&loan>0;
+    return{name:x.n,rates,on:!!S.lon[x.n],ok,pct,loan,pre:t.grand-loan,mx,s:ok?sched(loan,n,rates):null};});
+  return{n,total:t.grand,list};}
+function loanTable(x){const s=x.s;return `<table class="lt2"><tr><th>Năm</th><th class="r">Gốc/tháng (1)</th><th class="r">Phí quản lý/tháng (2)</th><th class="r">Tổng thanh toán/tháng (3=1+2)</th></tr>`+
+  s.years.map(y=>`<tr><td>${y.y}${y.m<12?` (${y.m} th)`:''}</td><td class="r">${dots(y.prin)}</td><td class="r">${dots(y.fee)}</td><td class="r">${dots(y.pay)}</td></tr>`).join('')+
+  `<tr class="sum"><td>Tổng cả kỳ</td><td class="r">${dots(x.loan)}</td><td class="r">${dots(s.int)}</td><td class="r">${dots(s.total)}</td></tr></table>`;}
 function renderIns(){const a=insInfo(),sel=a.list.filter(x=>x.on&&x.ok);
-  $('#ins').innerHTML=`<div class="note" style="margin:0 0 4px">Vay ${fmt(a.loan)} (trả trước ${a.dp}% = ${fmt(a.pre)}), kỳ hạn ${a.n} tháng. Bật phương án nào thì phương án đó được đưa vào bản in.</div>`+
-   a.list.map((x,i)=>`<label class="ln"><input type="checkbox" data-lon="${i}" ${x.on?'checked':''}><i></i><div class="lm"><b>${esc(x.name)}</b><small>${esc(ratesTxt(x.rates))}</small></div><div class="lp">${x.ok?`<b>${sh(x.s.first)}</b><small>/tháng${x.rates.length>1&&x.s.pays.length>1?' (năm 1)':''}</small>`:`<small>Tối đa ${CFG.lenders[i].mx||60} tháng</small>`}</div></label>`).join('');
+  $('#ins').innerHTML=`<div class="note" style="margin:0 0 4px">Giá trị báo giá ${fmt(a.total)} · kỳ hạn ${a.n} tháng (${nf(a.n/12,1)} năm). Bật phương án nào thì phương án đó được đưa vào bản in.</div>`+
+   a.list.map((x,i)=>`<label class="ln"><input type="checkbox" data-lon="${i}" ${x.on?'checked':''}><i></i><div class="lm"><b>${esc(x.name)}</b><small>Vay ${x.pct}% · ${esc(ratesTxt(x.rates))}</small></div>${x.ok?`<div class="lp a"><small>Trả trước ${nf(100-x.pct,1)}%</small><b>${fmt(x.pre)}</b></div><div class="lp b"><small>Hàng tháng${x.s.years.some(y=>y.pay!==x.s.first)?' (năm 1)':''}</small><b>${fmt(x.s.first)}</b></div>`:`<div class="lp"><small>${a.n>x.mx?'Tối đa '+x.mx+' tháng':'—'}</small></div>`}</label>${x.on&&x.ok?`<details class="dt"><summary>Xem bảng trả nợ từng năm</summary><div class="tw">${loanTable(x)}</div></details>`:''}`).join('');
   const si=$('#sIns');si.hidden=!sel.length;if(sel.length)si.innerHTML=`<span>Trả góp (${sel.length} phương án)</span><b>từ ${fmt(Math.min(...sel.map(x=>x.s.first)))}/th</b>`;}
 function calc(){
   const t=totals(),c=CFG.calc;
@@ -391,8 +414,8 @@ function setKw(kw){const c=wcat();if(!c||!(kw>0))return;let it=S.items.find(i=>i
 /* ===== Sự kiện ===== */
 document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{const k=b.parentNode.dataset.k;S[k]=b.dataset.v;if(k==='gr'&&b.dataset.v==='h')ensurePin();refresh();});
 const find=row=>(row.dataset.l==='s'?S.svc:S.items).find(x=>x.id==row.dataset.id);
-function startEdit(b,val,commit){const inp=document.createElement('input');inp.type='number';inp.min=0;inp.className='pin';inp.value=val;inp.setAttribute('aria-label','Đơn giá');
-  let done=0;const end=()=>{if(done)return;done=1;commit(Math.max(0,+inp.value||0));};b.replaceWith(inp);inp.focus();inp.select();inp.onblur=end;inp.onkeydown=e=>{if(e.key==='Enter')inp.blur();};}
+function startEdit(b,val,commit){const inp=document.createElement('input');inp.type='text';inp.inputMode='numeric';inp.dataset.money='';inp.className='pin';inp.value=dots(val);inp.setAttribute('aria-label','Đơn giá');
+  let done=0;const end=()=>{if(done)return;done=1;commit(undot(inp.value));};b.replaceWith(inp);inp.focus();inp.select();inp.onblur=end;inp.onkeydown=e=>{if(e.key==='Enter')inp.blur();};}
 $('#vq').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.add){addItem(d.add);renderMat();calc();return;}
   if(d.edit==='zr'){startEdit(b,S.zr,v=>{S.zr=v;updateZr();calc();});return;}
@@ -407,7 +430,7 @@ $('#resetAll').onclick=()=>{S.items.forEach(i=>i.price=i.base);S.svc.forEach(s=>
 $('#pin').onchange=e=>{if(e.target.checked)ensurePin();else S.items=S.items.filter(i=>i.c!=='bat');renderMat();calc();};
 $('#sl').addEventListener('input',e=>setKw(+e.target.value));
 $('#sug').onclick=()=>{const c=CFG.calc;const kw=Math.round(S.bill/c.price/c.kwh*10)/10;if(kw>0)setKw(kw);};
-$('#bill').addEventListener('input',e=>{const n=+e.target.value.replace(/\D/g,'')||0;S.bill=n;e.target.value=n?n.toLocaleString('vi-VN'):'';calc();});
+$('#bill').addEventListener('input',e=>{const n=+e.target.value.replace(/\D/g,'')||0;S.bill=n;e.target.value=n?dots(n):'';calc();});
 $('#zone').onchange=()=>{S.zr=CFG.zones[$('#zone').value]?.r||0;updateZr();calc();};
 $('#km').addEventListener('input',e=>{S.km=Math.max(0,+e.target.value||0);calc();});
 $('#vat').addEventListener('input',e=>{S.vat=Math.max(0,+e.target.value||0);S.vatT=1;calc();});
@@ -424,7 +447,7 @@ function applyCfg(){
   $('#zone').innerHTML=CFG.zones.map((x,i)=>`<option value="${i}">${esc(x.n)}</option>`).join('');
   $('#zone').value=Math.min(z,CFG.zones.length-1);
   S.zr=CFG.zones[$('#zone').value]?.r||0;updateZr();
-  if(!$('#bill').value)$('#bill').value=S.bill.toLocaleString('vi-VN');
+  if(!$('#bill').value)$('#bill').value=dots(S.bill);
   refresh();
 }
 
@@ -447,8 +470,11 @@ function build(mode){
   if(int)h+=`<h3>Tổng hợp chênh lệch giá</h3><table><tr><td>Tạm tính theo giá hệ thống</td><td class="r">${fmt(t.sub-diff)}</td></tr><tr><td>Tạm tính theo giá đã chỉnh</td><td class="r">${fmt(t.sub)}</td></tr>
    <tr class="tt"><td>Tổng chênh lệch (đã chỉnh − giá hệ thống)</td><td class="r ${diff>=0?'up':'dn'}">${diff>0?'+':''}${fmt(diff)}</td></tr></table>`;
   const sel=a.list.filter(x=>x.on&&x.ok);
-  if(sel.length){const pt=x=>x.s.pays.length>1&&x.s.pays.some(p=>Math.round(p)!==Math.round(x.s.pays[0]))?x.s.pays.map((p,i)=>`Năm ${i+1}: ${fmt(p)}`).join('<br>'):fmt(x.s.first);
-   h+=`<h3>Phương án trả góp</h3><p style="margin:0 0 6px">Giá trị ${fmt(t.grand)} · Trả trước ${a.dp}% = ${fmt(a.pre)} · Vay ${fmt(a.loan)} · Kỳ hạn ${a.n} tháng</p><div class="tw"><table><tr><th>Đơn vị / lãi suất</th><th class="r">Trả hằng tháng</th><th class="r">Tổng lãi</th><th class="r">Tổng gốc + lãi</th></tr>${sel.map(x=>`<tr><td><b>${esc(x.name)}</b><br><span style="color:#555">${esc(ratesTxt(x.rates))}</span></td><td class="r">${pt(x)}</td><td class="r">${fmt(x.s.int)}</td><td class="r">${fmt(x.s.total)}</td></tr>`).join('')}</table></div><p style="font-size:10px;color:#555;margin:4px 0 0">Số liệu ước tính theo dư nợ giảm dần, thực tế theo hồ sơ duyệt của đơn vị tài chính.</p>`;}
+  if(sel.length){
+   h+=`<h3>Phương án trả góp</h3><p style="margin:0 0 6px">Giá trị báo giá: <b>${fmt(a.total)}</b> · Kỳ hạn vay: <b>${a.n} tháng (${nf(a.n/12,1)} năm)</b></p>`;
+   if(sel.length>1)h+=`<div class="tw"><table><tr><th>Đơn vị / lãi suất</th><th class="r">Trả trước / Vay</th><th class="r">Hàng tháng (năm 1)</th><th class="r">Tổng lãi</th></tr>${sel.map(x=>`<tr><td><b>${esc(x.name)}</b><br><span style="color:#555">${esc(ratesTxt(x.rates))}</span></td><td class="r">Trả trước: ${fmt(x.pre)}<br>Vay: ${fmt(x.loan)}</td><td class="r">${fmt(x.s.first)}</td><td class="r">${fmt(x.s.int)}</td></tr>`).join('')}</table></div>`;
+   sel.forEach(x=>{h+=`<div style="font-weight:700;margin-top:12px">${esc(x.name)}</div><p style="margin:2px 0 4px">Trả trước <b>${nf(100-x.pct,1)}% = ${fmt(x.pre)}</b> · Vay <b>${x.pct}% = ${fmt(x.loan)}</b> · Lãi suất: ${esc(ratesTxt(x.rates))}</p><div class="tw">${loanTable(x)}</div>`;});
+   h+=`<p style="font-size:10px;color:#555;margin:6px 0 0">Gốc trả đều hằng tháng. Phí quản lý (lãi) hằng tháng = dư nợ đầu năm × lãi suất năm ÷ 12. Số liệu ước tính, thực tế theo hồ sơ duyệt của đơn vị tài chính.</p>`;}
   return h+(co.note?`<p style="margin-top:14px;font-size:11px;color:#444">${esc(co.note)}</p>`:'');
 }
 let mode='customer';
@@ -462,29 +488,29 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)$('#clos
 /* ===== Quản trị ===== */
 let dirty=false,DB=null,USER=null;
 const f=(l,h,st)=>`<div ${st?`style="${st}"`:''}><label class="l">${l}</label>${h}</div>`;
-const inp=(p,v,n)=>`<input class="fld" data-p="${p}" ${n?'type="number" step="any" data-n="1"':''} value="${esc(v)}">`;
+const inp=(p,v,n)=>`<input class="fld" data-p="${p}" ${n==='m'?'type="text" inputmode="numeric" data-n="1" data-money':n?'type="number" step="any" data-n="1"':''} value="${esc(n==='m'?dots(v):v)}">`;
 const sel=(p,v,l)=>`<select data-p="${p}">${l.map(([k,t])=>`<option value="${k}" ${k===v?'selected':''}>${t}</option>`).join('')}</select>`;
 const PH=[['','Mọi pha'],['1','1 pha'],['3','3 pha']],GR=[['','Mọi hệ'],['g','Hòa lưới'],['h','Hybrid']],VO=[['','Mọi áp'],['l','Áp thấp'],['h','Áp cao']];
 function renderAdmin(){
   const co=CFG.co,k=CFG.calc;
   let h=`<section class="card"><h2>Thông tin công ty (hiện trên PDF)</h2><div class="grid">${f('Tên công ty',inp('co.name',co.name))}${f('Điện thoại',inp('co.phone',co.phone))}${f('Địa chỉ',inp('co.addr',co.addr))}${f('Ghi chú cuối báo giá',inp('co.note',co.note))}</div></section>
-  <section class="card"><h2>Thông số tính toán</h2><div class="grid">${f('Sản lượng (kWh mỗi kWp mỗi tháng)',inp('calc.kwh',k.kwh,1))}${f('Giá điện trung bình (đ/kWh)',inp('calc.price',k.price,1))}${f('Diện tích mái tối thiểu (m² mỗi kWp)',inp('calc.m2lo',k.m2lo,1))}${f('Diện tích mái tối đa (m² mỗi kWp)',inp('calc.m2hi',k.m2hi,1))}${f('Hệ nhỏ đến (kWp)',inp('calc.small',k.small,1))}${f('Hệ trung đến (kWp)',inp('calc.mid',k.mid,1))}${f('VAT mặc định (%)',inp('calc.vat',k.vat,1))}</div><p class="note">Dùng cho gợi ý công suất theo tiền điện, ước tính tiết kiệm, hoàn vốn và diện tích mái.</p></section>`;
+  <section class="card"><h2>Thông số tính toán</h2><div class="grid">${f('Sản lượng (kWh mỗi kWp mỗi tháng)',inp('calc.kwh',k.kwh,1))}${f('Giá điện trung bình (đ/kWh)',inp('calc.price',k.price,'m'))}${f('Diện tích mái tối thiểu (m² mỗi kWp)',inp('calc.m2lo',k.m2lo,1))}${f('Diện tích mái tối đa (m² mỗi kWp)',inp('calc.m2hi',k.m2hi,1))}${f('Hệ nhỏ đến (kWp)',inp('calc.small',k.small,1))}${f('Hệ trung đến (kWp)',inp('calc.mid',k.mid,1))}${f('VAT mặc định (%)',inp('calc.vat',k.vat,1))}</div><p class="note">Dùng cho gợi ý công suất theo tiền điện, ước tính tiết kiệm, hoàn vốn và diện tích mái.</p></section>`;
   CFG.cats.forEach((c,ci)=>{
     h+=`<section class="card"><div class="ah">${f('Tên nhóm vật tư',inp(`cats.${ci}.title`,c.title),'flex:1;min-width:180px')}${f('Số dòng mặc định',inp(`cats.${ci}.auto`,c.auto,1),'width:130px')}${f('SL mặc định',inp(`cats.${ci}.qty`,c.qty,1),'width:110px')}<button class="btn" style="width:auto;margin:0" data-del="cats" data-i="${ci}">Xóa nhóm</button><label class="chk" style="margin:0 0 8px"><input type="checkbox" data-p="cats.${ci}.watt" ${c.watt?'checked':''}> Tính công suất (W/tấm)</label></div>
     <div class="ahead ${c.watt?'w':''}"><div>Tên sản phẩm</div><div>Giá gốc (₫)</div>${c.watt?'<div>Công suất (W)</div>':''}<div>Pha</div><div>Kiểu hệ</div><div>Điện áp</div><div></div></div>`+
-    c.items.map((o,i)=>{const b=`cats.${ci}.items.${i}`;return `<div class="arow ${c.watt?'w':''}">${inp(b+'.n',o.n)}${inp(b+'.p',o.p,1)}${c.watt?inp(b+'.w',o.w||0,1):''}${sel(b+'.ph',o.ph,PH)}${sel(b+'.g',o.g,GR)}${sel(b+'.v',o.v,VO)}<button class="x" data-del="cats.${ci}.items" data-i="${i}" aria-label="Xóa">×</button></div>`;}).join('')+
+    c.items.map((o,i)=>{const b=`cats.${ci}.items.${i}`;return `<div class="arow ${c.watt?'w':''}">${inp(b+'.n',o.n)}${inp(b+'.p',o.p,'m')}${c.watt?inp(b+'.w',o.w||0,1):''}${sel(b+'.ph',o.ph,PH)}${sel(b+'.g',o.g,GR)}${sel(b+'.v',o.v,VO)}<button class="x" data-del="cats.${ci}.items" data-i="${i}" aria-label="Xóa">×</button></div>`;}).join('')+
     `<button class="add" data-add="cats.${ci}.items">+ Thêm sản phẩm</button></section>`;});
   h+=`<button class="add" data-add="cats">+ Thêm nhóm vật tư mới</button>`;
-  h+=`<section class="card"><h2>Thi công và dịch vụ</h2>`+CFG.svc.map((o,i)=>`<div class="arow s3">${inp(`svc.${i}.k`,o.k)}${inp(`svc.${i}.p`,o.p,1)}${sel(`svc.${i}.u`,o.u||'',[['','Tính theo gói / cái'],['kWp','Tính theo kWp']])}<button class="x" data-del="svc" data-i="${i}" aria-label="Xóa">×</button></div>`).join('')+`<div class="note">Cột: tên hạng mục, đơn giá mặc định (₫), cách tính. “Theo kWp” tự lấy số lượng bằng công suất hệ thống.</div><button class="add" data-add="svc">+ Thêm hạng mục</button></section>`;
-  const lst=(title,key,a,b,note,addl)=>`<section class="card"><h2>${title}</h2>`+CFG[key].map((o,i)=>`<div class="arow s2">${inp(`${key}.${i}.${a}`,o[a])}${inp(`${key}.${i}.${b}`,o[b],1)}<button class="x" data-del="${key}" data-i="${i}" aria-label="Xóa">×</button></div>`).join('')+`<div class="note">${note}</div><button class="add" data-add="${key}">${addl}</button></section>`;
+  h+=`<section class="card"><h2>Thi công và dịch vụ</h2>`+CFG.svc.map((o,i)=>`<div class="arow s3">${inp(`svc.${i}.k`,o.k)}${inp(`svc.${i}.p`,o.p,'m')}${sel(`svc.${i}.u`,o.u||'',[['','Tính theo gói / cái'],['kWp','Tính theo kWp']])}<button class="x" data-del="svc" data-i="${i}" aria-label="Xóa">×</button></div>`).join('')+`<div class="note">Cột: tên hạng mục, đơn giá mặc định (₫), cách tính. “Theo kWp” tự lấy số lượng bằng công suất hệ thống.</div><button class="add" data-add="svc">+ Thêm hạng mục</button></section>`;
+  const lst=(title,key,a,b,note,addl)=>`<section class="card"><h2>${title}</h2>`+CFG[key].map((o,i)=>`<div class="arow s2">${inp(`${key}.${i}.${a}`,o[a])}${inp(`${key}.${i}.${b}`,o[b],'m')}<button class="x" data-del="${key}" data-i="${i}" aria-label="Xóa">×</button></div>`).join('')+`<div class="note">${note}</div><button class="add" data-add="${key}">${addl}</button></section>`;
   h+=lst('Vận chuyển theo khu vực','zones','n','r','Cột: khu vực, giá mỗi km (₫).','+ Thêm khu vực');
-  h+=`<section class="card"><h2>Quỹ / ngân hàng trả góp</h2>`+CFG.lenders.map((o,i)=>`<div class="arow s3">${inp(`lenders.${i}.n`,o.n)}${inp(`lenders.${i}.mx`,o.mx,1)}<span class="base2">tối đa (tháng)</span><button class="x" data-del="lenders" data-i="${i}" aria-label="Xóa">×</button></div><div class="yrs">${o.rates.map((r,k)=>`<div><label class="l">Năm ${k+1} (%)</label>${inp(`lenders.${i}.rates.${k}`,r,1)}</div>`).join('')}<div class="yb"><button class="add" data-add="lenders.${i}.rates">+ Năm</button>${o.rates.length>1?`<button class="add" data-del="lenders.${i}.rates" data-i="${o.rates.length-1}">− Năm</button>`:''}</div></div>`).join('')+`<div class="note">Cột trên: tên đơn vị, kỳ hạn tối đa. Lãi suất nhập theo từng năm vay, năm cuối được áp dụng cho các năm còn lại.</div><button class="add" data-add="lenders">+ Thêm ngân hàng / quỹ</button></section>`;
+  h+=`<section class="card"><h2>Quỹ / ngân hàng trả góp</h2>`+CFG.lenders.map((o,i)=>`<div class="ah">${f('Tên ngân hàng / quỹ',inp(`lenders.${i}.n`,o.n),'flex:1;min-width:150px')}${f('Vay tối đa (% giá trị)',inp(`lenders.${i}.lm`,o.lm,1),'width:130px')}${f('Kỳ hạn tối đa (tháng)',inp(`lenders.${i}.mx`,o.mx,1),'width:140px')}<button class="btn" style="width:auto;margin:0 0 2px" data-del="lenders" data-i="${i}">Xóa</button></div><div class="yrs">${o.rates.map((r,k)=>`<div><label class="l">Lãi năm ${k+1} (%)</label>${inp(`lenders.${i}.rates.${k}`,r,1)}</div>`).join('')}<div class="yb"><button class="add" data-add="lenders.${i}.rates">+ Năm</button>${o.rates.length>1?`<button class="add" data-del="lenders.${i}.rates" data-i="${o.rates.length-1}">− Năm</button>`:''}</div></div>`).join('')+`<div class="note">Vay tối đa 80% nghĩa là khách trả trước tối thiểu 20% giá trị báo giá. Lãi suất nhập theo từng năm vay, năm cuối được áp dụng cho các năm còn lại.</div><button class="add" data-add="lenders">+ Thêm ngân hàng / quỹ</button></section>`;
   $('#admin').innerHTML=h;
 }
 const getp=p=>p.split('.').reduce((o,k)=>o[k],CFG);
 function mark(){dirty=true;$('#st').style.color='var(--mute)';$('#st').textContent='Có thay đổi chưa lưu';}
 $('#admin').addEventListener('input',e=>{const p=e.target.dataset.p;if(!p)return;const k=p.split('.'),l=k.pop(),o=getp(k.join('.'));
-  const cb=e.target.type==='checkbox';o[l]=cb?(e.target.checked?1:0):e.target.dataset.n?(+e.target.value||0):e.target.value;mark();if(cb)renderAdmin();});
+  const cb=e.target.type==='checkbox';o[l]=cb?(e.target.checked?1:0):e.target.dataset.money!==undefined?undot(e.target.value):e.target.dataset.n?(+e.target.value||0):e.target.value;mark();if(cb)renderAdmin();});
 $('#admin').addEventListener('change',e=>{if(e.target.tagName==='SELECT')e.target.dispatchEvent(new Event('input',{bubbles:true}));});
 $('#admin').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(d.add){const ar=getp(d.add),kk=d.add.split('.').pop();ar.push(kk==='rates'?(+ar[ar.length-1]||12):TPL[kk]());renderAdmin();mark();}
@@ -511,7 +537,7 @@ function load(j){try{const c=JSON.parse(j);if(c&&c.cats&&c.svc&&c.zones&&c.lende
   c.calc={...DEFCALC,...(c.calc||{})};
   c.cats.forEach(x=>{if(x.watt===undefined){x.watt=x.id==='panel'?1:0;x.items.forEach(o=>{if(o.w===undefined){const m=/(\d{3,4})\s*W/i.exec(o.n);o.w=x.watt&&m?+m[1]:0;}});}});
   c.svc.forEach(s=>{if(s.u===undefined)s.u=/lắp đặt/i.test(s.k)?'kWp':'';});
-  c.lenders.forEach(x=>{if(!x.rates)x.rates=[+x.r||12];if(!x.mx)x.mx=60;});CFG=c;return true;}}catch(e){}return false;}
+  c.lenders.forEach(x=>{if(!x.rates)x.rates=[+x.r||12];if(!x.mx)x.mx=60;if(!x.lm)x.lm=80;});CFG=c;return true;}}catch(e){}return false;}
 try{const j=localStorage.getItem('solar-cfg');if(j)load(j);}catch(e){}
 applyCfg();view();
 (async()=>{

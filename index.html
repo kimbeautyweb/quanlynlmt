@@ -224,6 +224,36 @@ input.pin{width:130px}
  .dt summary{padding-left:0;font-size:12px}#ins .lt2,#sheet .lt2{font-size:10.5px}#ins .lt2 th,#ins .lt2 td,#sheet .lt2 th,#sheet .lt2 td{padding:3px 4px}
 }
 @media print{.paper tr{break-inside:avoid}.paper h3{break-after:avoid}}
+/* ===== Giao diện PDF ===== */
+.paper{font-size:12px;line-height:1.5}
+.paper .ph{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding-bottom:12px;border-bottom:3px solid #f59e0b}
+.paper .co{font-size:18px;font-weight:700;color:#14532d;line-height:1.25}.paper .cs{color:#555;margin-top:2px}
+.paper .pt{text-align:right}.paper .pb{font-size:22px;font-weight:800;color:#d97706;letter-spacing:.04em;line-height:1}
+.paper .pd{color:#555;margin-top:4px}
+.paper .tag{display:inline-block;margin-top:4px;background:#14532d;color:#fff;padding:2px 10px;border-radius:99px;font-size:10.5px;font-weight:600;border:0}
+.paper .ptitle{margin:12px 0 10px;font-size:13px;font-weight:700;color:#14532d;letter-spacing:.02em}
+.paper .pcards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.paper .pc{border:1px solid #d6e0d9;background:#f6faf7;border-radius:8px;padding:8px 10px;color:#14301f}
+.paper .pl{font-size:10px;letter-spacing:.08em;color:#5d776a;font-weight:700;margin-bottom:2px}
+.paper h3{font-size:13px;color:#14532d;border:0;border-left:4px solid #f59e0b;padding:0 0 0 8px;margin:16px 0 8px}
+.paper table{border-collapse:separate;border-spacing:0;border:1px solid #cfdad2}
+.paper table th{background:#14532d;color:#fff;border:0;padding:6px 8px;font-weight:600}
+.paper table td{border:0;border-top:1px solid #e3ebe5;padding:6px 8px;color:#14301f}
+.paper table tr:nth-child(even) td{background:#f7faf8}
+.paper .mut{color:#667a70;font-size:10.5px}
+.paper tr.tot td{background:#e9f0eb!important;color:#14301f!important;font-weight:600}
+.paper tr.grand td{background:#14532d!important;color:#fff!important;font-weight:700;font-size:13.5px;padding:8px}
+.paper tr.diff td{background:#fff1c9!important;color:#4a3300!important;font-weight:700}
+.paper .up{color:#0a6b2d}.paper .dn{color:#b3261e}
+.paper .lname{font-weight:700;color:#1d4fa8;margin:12px 0 2px;font-size:12.5px}
+.paper table.lt2{border-color:#c6d6ef}
+.paper table.lt2 th{background:#2b6cd0;color:#fff}
+.paper table.lt2 td{border:0;border-top:1px solid #dbe5f5;padding:5px 8px;color:#14301f}
+.paper table.lt2 tr:nth-child(even) td{background:#f5f8fe}
+.paper table.lt2 tr.sum td{background:#dbe7fa!important;color:#0f2a5c!important;font-weight:700}
+.paper .sign{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;text-align:center;font-weight:600;color:#14301f}
+.paper .sign div{height:96px}.paper .sign i{font-weight:400;color:#667a70;font-size:10.5px}
+@media (max-width:640px){#sheet .paper .pcards{grid-template-columns:1fr}#sheet .paper .ph{flex-wrap:wrap}#sheet .paper .pt{text-align:left}#sheet .paper .pb{font-size:18px}}
 @media print{@page{size:A4;margin:14mm}body{background:#fff}body::before,.top,.app,.mbar,.sbar{display:none!important}#sheet{position:static;overflow:visible;background:#fff;padding:0}.paper{margin:0;padding:0;max-width:none;border-radius:0}}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -460,24 +490,24 @@ function build(mode){
   const cfgT=`${S.ph} pha · ${S.gr==='g'?'Hòa lưới':'Hybrid'} · ${pinOn()?(S.vo==='l'?'Pin áp thấp':'Pin áp cao'):'Không pin lưu trữ'} · ${nf(t.cur)} kWp`;
   const zn=CFG.zones[$('#zone').value]?.n||'',zb=CFG.zones[$('#zone').value]?.r||0;let diff=0;
   const R=(nm,q,qt,base,price)=>{const df=(price-base)*q;diff+=df;return int?`<tr><td>${nm}</td><td class="r">${qt}</td><td class="r">${fmt(base)}</td><td class="r">${fmt(price)}</td><td class="r ${df>0?'up':df<0?'dn':''}">${df>0?'+':''}${fmt(df)}</td><td class="r">${fmt(price*q)}</td></tr>`:`<tr><td>${nm}</td><td class="r">${qt}</td><td class="r">${fmt(price)}</td><td class="r">${fmt(price*q)}</td></tr>`;};
-  const rows=S.items.map(i=>R(`${esc(lbl(i.c))}: ${esc(i.n)}`,i.qty,i.qty,i.base,i.price)).join('')
-   +S.svc.filter(s=>s.qty>0).map(s=>R(esc(s.k),s.qty,s.u?nf(s.qty,1)+' '+(s.u==='kWp'?'kW':esc(s.u)):s.qty,s.base,s.price)).join('')
-   +(S.km>0?R(`Vận chuyển: ${esc(zn)}`,S.km,S.km+' km',zb,S.zr):'');
+  const rows=S.items.map(i=>R(`<b>${esc(i.n)}</b><br><span class="mut">${esc(lbl(i.c))}</span>`,i.qty,i.qty,i.base,i.price)).join('')
+   +S.svc.filter(s=>s.qty>0).map(s=>R(`<b>${esc(s.k)}</b>`,s.qty,s.u?nf(s.qty,1)+' '+(s.u==='kWp'?'kW':esc(s.u)):s.qty,s.base,s.price)).join('')
+   +(S.km>0?R(`<b>Vận chuyển</b><br><span class="mut">${esc(zn)}</span>`,S.km,S.km+' km',zb,S.zr):'');
   const head=int?'<th>Hạng mục</th><th class="r">SL</th><th class="r">Giá hệ thống</th><th class="r">Giá đã chỉnh</th><th class="r">Chênh lệch</th><th class="r">Thành tiền</th>':'<th>Hạng mục</th><th class="r">SL</th><th class="r">Đơn giá</th><th class="r">Thành tiền</th>';
   const cs=int?5:3,tr=(l,v,c)=>`<tr class="${c||''}"><td colspan="${cs}" class="r">${l}</td><td class="r">${v}</td></tr>`;
-  let h=`<div class="meta"><div><h1>${esc(co.name)}</h1><div>${esc(co.addr)} ${co.phone?'· ĐT: '+esc(co.phone):''}</div></div>${int?'<div><span class="tag">BẢN NỘI BỘ - KHÔNG GỬI KHÁCH</span></div>':''}</div>
-  <div class="meta"><div><b style="font-size:15px">BÁO GIÁ HỆ THỐNG ĐIỆN NĂNG LƯỢNG MẶT TRỜI</b><br>Ngày: ${d}</div></div>
-  <div class="meta"><div><b>Khách hàng:</b> ${esc($('#ti').value)} ${esc($('#cn').value||'-')}<br><b>Điện thoại:</b> ${esc($('#cp').value||'-')}<br><b>Địa chỉ:</b> ${esc($('#ca').value||'-')}</div><div><b>Cấu hình:</b><br>${cfgT}</div></div>
-  <h3>Chi tiết báo giá</h3><div class="tw"><table class="${int?'wide':''}"><tr>${head}</tr>${rows}${tr('TẠM TÍNH',fmt(t.sub))}${S.vat>0?tr(`VAT (${nf(S.vat)}%)`,fmt(t.vat)):''}${tr('TỔNG SAU THUẾ',fmt(t.grand),'tt')}</table></div>`;
+  let h=`<div class="ph"><div><div class="co">${esc(co.name)}</div><div class="cs">${esc(co.addr)}${co.phone?(co.addr?' · ':'')+'ĐT: '+esc(co.phone):''}</div></div><div class="pt"><div class="pb">BÁO GIÁ</div><div class="pd">Ngày ${d}</div>${int?'<span class="tag">BẢN NỘI BỘ · KHÔNG GỬI KHÁCH</span>':''}</div></div>
+  <div class="ptitle">BÁO GIÁ HỆ THỐNG ĐIỆN NĂNG LƯỢNG MẶT TRỜI</div>
+  <div class="pcards"><div class="pc"><div class="pl">KHÁCH HÀNG</div><b>${esc($('#ti').value)} ${esc($('#cn').value||'-')}</b><div>ĐT: ${esc($('#cp').value||'-')}</div><div>Địa chỉ: ${esc($('#ca').value||'-')}</div></div><div class="pc"><div class="pl">CẤU HÌNH HỆ THỐNG</div><b>${nf(t.cur)} kWp</b><div>${S.ph} pha · ${S.gr==='g'?'Hòa lưới':'Hybrid'}</div><div>${pinOn()?(S.vo==='l'?'Pin lưu trữ áp thấp':'Pin lưu trữ áp cao'):'Không pin lưu trữ'}</div></div></div>
+  <h3>Chi tiết báo giá</h3><div class="tw"><table class="${int?'wide':''}"><tr>${head}</tr>${rows}${tr('TẠM TÍNH',fmt(t.sub),'tot')}${S.vat>0?tr(`VAT (${nf(S.vat)}%)`,fmt(t.vat),'tot'):''}${tr('TỔNG SAU THUẾ',fmt(t.grand),'grand')}</table></div>`;
   if(int)h+=`<h3>Tổng hợp chênh lệch giá</h3><table><tr><td>Tạm tính theo giá hệ thống</td><td class="r">${fmt(t.sub-diff)}</td></tr><tr><td>Tạm tính theo giá đã chỉnh</td><td class="r">${fmt(t.sub)}</td></tr>
-   <tr class="tt"><td>Tổng chênh lệch (đã chỉnh − giá hệ thống)</td><td class="r ${diff>=0?'up':'dn'}">${diff>0?'+':''}${fmt(diff)}</td></tr></table>`;
+   <tr class="diff"><td>Tổng chênh lệch (đã chỉnh − giá hệ thống)</td><td class="r ${diff>=0?'up':'dn'}">${diff>0?'+':''}${fmt(diff)}</td></tr></table>`;
   const sel=a.list.filter(x=>x.on&&x.ok);
   if(sel.length){
    h+=`<h3>Phương án trả góp</h3><p style="margin:0 0 6px">Giá trị báo giá: <b>${fmt(a.total)}</b> · Kỳ hạn vay: <b>${a.n} tháng (${nf(a.n/12,1)} năm)</b></p>`;
    if(sel.length>1)h+=`<div class="tw"><table><tr><th>Đơn vị / lãi suất</th><th class="r">Trả trước / Vay</th><th class="r">Hàng tháng (năm 1)</th><th class="r">Tổng lãi</th></tr>${sel.map(x=>`<tr><td><b>${esc(x.name)}</b><br><span style="color:#555">${esc(ratesTxt(x.rates))}</span></td><td class="r">Trả trước: ${fmt(x.pre)}<br>Vay: ${fmt(x.loan)}</td><td class="r">${fmt(x.s.first)}</td><td class="r">${fmt(x.s.int)}</td></tr>`).join('')}</table></div>`;
-   sel.forEach(x=>{h+=`<div style="font-weight:700;margin-top:12px">${esc(x.name)}</div><p style="margin:2px 0 4px">Trả trước <b>${nf(100-x.pct,1)}% = ${fmt(x.pre)}</b> · Vay <b>${x.pct}% = ${fmt(x.loan)}</b> · Lãi suất: ${esc(ratesTxt(x.rates))}</p><div class="tw">${loanTable(x)}</div>`;});
+   sel.forEach(x=>{h+=`<div class="lname">${esc(x.name)}</div><p style="margin:2px 0 4px">Trả trước <b>${nf(100-x.pct,1)}% = ${fmt(x.pre)}</b> · Vay <b>${x.pct}% = ${fmt(x.loan)}</b> · Lãi suất: ${esc(ratesTxt(x.rates))}</p><div class="tw">${loanTable(x)}</div>`;});
    h+=`<p style="font-size:10px;color:#555;margin:6px 0 0">Gốc trả đều hằng tháng. Phí quản lý (lãi) hằng tháng = dư nợ đầu năm × lãi suất năm ÷ 12. Số liệu ước tính, thực tế theo hồ sơ duyệt của đơn vị tài chính.</p>`;}
-  return h+(co.note?`<p style="margin-top:14px;font-size:11px;color:#444">${esc(co.note)}</p>`:'');
+  return h+(co.note?`<p style="margin:14px 0 0;font-size:11px;color:#444">${esc(co.note)}</p>`:'')+(int?'':'<div class="sign"><div>Khách hàng<br><i>(Ký, ghi rõ họ tên)</i></div><div>Đại diện công ty<br><i>(Ký, đóng dấu)</i></div></div>');
 }
 let mode='customer';
 function sheet(m){mode=m;$('#print').innerHTML=build(m);document.querySelectorAll('.mseg button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));$('#sheet').hidden=false;$('#sheet').scrollTop=0;document.body.style.overflow='hidden';}
@@ -502,7 +532,7 @@ async function exportPdf(){
     if(document.fonts&&document.fonts.ready)await document.fonts.ready;
     const sc=1.5,cv=await html2canvas(src,{scale:sc,backgroundColor:'#ffffff',useCORS:true,windowWidth:794,scrollX:0,scrollY:0});
     const base=src.getBoundingClientRect().top;
-    const cands=[...src.querySelectorAll('tr,p,.meta')].filter(e=>!(e.tagName==='TR'&&e.querySelector('th'))).map(e=>Math.round((e.getBoundingClientRect().bottom-base)*sc)).sort((a,b)=>a-b);
+    const cands=[...src.querySelectorAll('tr,p,.ph,.pcards,.sign')].filter(e=>!(e.tagName==='TR'&&e.querySelector('th'))).map(e=>Math.round((e.getBoundingClientRect().bottom-base)*sc)).sort((a,b)=>a-b);
     const {jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4',compress:true});
     const W=cv.width,H=cv.height,pxmm=W/198,pageH=Math.floor(285*pxmm);let y=0,first=true;
     while(y<H-2){let end=Math.min(H,y+pageH);

@@ -126,11 +126,92 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
  .it>.pill,.it>.nm{grid-area:p}.it>.stp{grid-area:s}.it>.pr{grid-area:r}.it>.lt{grid-area:t}.it>.x{grid-area:x}
  .arow,.arow.s2,.arow.s3,.arow.w{grid-template-columns:1fr 1fr}.arow>:first-child{grid-column:1/-1}.ahead{display:none}
  .crow2{grid-template-columns:1fr}.big,input.bill{font-size:24px}}
+/* ===== Giao diện mobile theo ảnh mẫu ===== */
+.menu{display:none;position:relative}
+.drop{position:absolute;left:0;top:46px;min-width:170px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 8px 30px rgba(0,0,0,.35);z-index:40}
+.drop button{display:block;width:100%;text-align:left;border:0;background:none;padding:12px 14px;border-radius:10px;font-weight:600}
+.drop button.on{background:var(--greenbg);color:var(--green)}
+.more{border:0;background:none;color:var(--green);font-weight:600;font-size:13px;padding:8px 4px 0}
+.card:has(>.sh){background:none;border:0;padding:0;border-radius:0;margin-bottom:20px}
+.sh{padding:8px 2px 10px}
+.it{grid-template-columns:minmax(0,1fr) auto auto 62px 22px;grid-template-areas:"p s r t x" "c c c c c";gap:4px 8px;padding:10px 0}
+.it.sv{grid-template-columns:minmax(0,1fr) auto auto 62px;grid-template-areas:"p s r t" "c c c c"}
+.it>.pill,.it>.nm{grid-area:p}.it>.stp{grid-area:s}.it>.pr{grid-area:r}.it>.lt{grid-area:t}.it>.x{grid-area:x}.it>.cap{grid-area:c}
+.pill{position:relative;gap:6px;padding:5px 8px 5px 6px;height:48px}
+.pill .brand{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pill .spec{margin-left:auto}.pill .cv{color:#7a8f84;font-size:13px;flex:none}
+.pill select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;font-size:16px}
+.pill .brand:empty+.cv{margin-left:auto}
+.cap{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--mute);min-width:0}
+.cap span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cap .rs{display:inline;margin:0;white-space:nowrap}
+.stp{height:38px;min-width:0;gap:0}
+.stp button{width:26px;height:38px;font-size:19px}
+.stp input{width:30px;font-size:16px}
+.stp.km{padding:0 10px;gap:4px}.stp.km input{width:46px}
+.pv{font-size:15px}.lt{font-size:16px}
+.mbar{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));border-radius:26px;padding:12px 12px 12px 20px;box-shadow:0 10px 30px rgba(249,115,22,.35)}
+.mbar b{font-size:24px;display:block}.mbar button{padding:14px 18px;border-radius:18px}
+@media (min-width:641px){.it{gap:4px 14px}}
+@media (max-width:640px){.menu{display:block}.tabs{display:none}.top{padding:10px 14px}.x{display:none}
+ .it,.it.sv{grid-template-columns:minmax(0,1fr) auto auto 62px;grid-template-areas:"p s r t" "c c c c";gap:4px 8px}
+ .stats{font-size:13px;gap:2px 14px}.ic{width:28px;height:28px;font-size:15px}.spec{padding:4px 7px;font-size:13px}
+ .app{padding:14px 14px 130px}.card:not(:has(>.sh)){padding:14px;border-radius:20px}}
+/* ===== Thu nhỏ, gọn trên mobile ===== */
+@media (max-width:640px){
+ body{font-size:13.5px;line-height:1.35}
+ .top{padding:7px 12px;gap:10px}.brand{font-size:17px}.ibtn{width:34px;height:34px;font-size:15px}.drop{top:42px}
+ .app{padding:10px 12px 96px}
+ .card{margin-bottom:10px}.card:not(:has(>.sh)){padding:10px 12px;border-radius:16px}
+ h2{font-size:15px;margin-bottom:8px}
+ .crow select{font-size:14px;padding:6px 11px}.crow input.nm{font-size:16px;padding:4px}
+ .more{font-size:12px;padding:4px 2px 0}.crow2{gap:6px;margin-top:6px}.fld,input.fld{padding:8px 10px;font-size:14px}
+ .stats{font-size:12px;gap:0 12px;margin:0 2px 8px}
+ .segs{gap:5px;margin-bottom:10px}.lab{font-size:10px;margin:0 0 4px 6px;letter-spacing:.06em}
+ .seg{padding:3px}.seg button{font-size:12px;padding:6px 2px}
+ .line{padding:5px 2px;gap:8px}.big,input.bill{font-size:22px}.k,.u{font-size:13px}
+ .chip{padding:6px 12px;font-size:13px}.badge{padding:4px 11px;font-size:12px}
+ .tg{padding:3px 11px 3px 4px;font-size:13px}.tg i{width:32px;height:19px}.tg i:after{width:13px;height:13px}.tg input:checked+i:after{left:16px}
+ input[type=range]{height:22px;margin:2px 0 0}.note{font-size:11.5px;margin-top:3px}
+ .card:has(>.sh){margin-bottom:12px}.sh{padding:4px 2px 6px;margin-bottom:2px;gap:6px}.sh span{font-size:11px}.sh b{font-size:17px}.lnk{font-size:11.5px;padding:2px}
+ .it,.it.sv{grid-template-columns:minmax(0,1fr) auto auto 54px;gap:2px 6px;padding:6px 0}
+ .pill{height:38px;padding:4px 6px 4px 5px;border-radius:12px;gap:5px}
+ .ic{width:24px;height:24px;font-size:13px;border-radius:8px}
+ .pill .brand{font-size:13px}.spec{padding:3px 6px;font-size:11.5px;border-radius:8px}.pill .cv{font-size:11px}
+ .nm{font-size:13.5px}.nm small{font-size:11px}
+ .stp{height:30px}.stp button{width:22px;height:30px;font-size:17px}.stp input{width:26px;font-size:14px}
+ .stp.auto{padding:0 8px;font-size:12.5px}.stp.km{padding:0 8px;font-size:12.5px}.stp.km input{width:38px}
+ .pv{font-size:13px;padding:2px 0}.lt{font-size:14px}.cap{font-size:11px}.rs{font-size:11px}
+ .add{padding:6px 13px;font-size:13px;margin:6px 6px 0 0}
+ .grid{gap:8px}label.l{font-size:12px;margin-bottom:2px}.res{padding:8px 10px;font-size:13px;margin-top:8px}.chk{margin-bottom:8px}
+ .sum .l{padding:3px 0}.tt{padding:10px 12px;margin:8px 0}.tt b{font-size:22px}.btn{padding:10px 14px;margin-top:6px}
+ .mbar{left:10px;right:10px;padding:8px 8px 8px 16px;border-radius:22px}.mbar small{font-size:11px}.mbar b{font-size:20px}.mbar button{padding:10px 14px;font-size:14px;border-radius:15px}
+}
+/* ===== Trả góp, PDF mobile ===== */
+.ln{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px solid var(--line);cursor:pointer}
+.ln input{position:absolute;opacity:0}
+.ln i{flex:none;width:36px;height:21px;border-radius:99px;background:var(--bg2);position:relative;transition:.15s}
+.ln i:after{content:"";position:absolute;top:3px;left:3px;width:15px;height:15px;border-radius:50%;background:var(--mute);transition:.15s}
+.ln input:checked+i{background:var(--greenbg)}.ln input:checked+i:after{left:18px;background:var(--green)}
+.ln input:focus-visible+i{outline:2px solid var(--green)}
+.lm{flex:1;min-width:0}.lm b{display:block}.lm small{color:var(--mute);font-size:12px}
+.lp{text-align:right;white-space:nowrap}.lp b{font-size:16px;color:var(--green)}.lp small{color:var(--mute);font-size:11.5px;display:block}
+.yrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;align-items:end;margin:4px 0 12px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.yb{display:flex;gap:6px;flex-wrap:wrap}.yb .add{margin:0;padding:8px 12px}
+.base2{font-size:12px;color:var(--mute)}
+#admin .x{display:block!important}
+.tw{overflow-x:auto}#sheet{overflow-x:hidden}
+@media screen and (max-width:640px){
+ .ln{padding:6px 2px}.lm small{font-size:11px}.lp b{font-size:14px}
+ .paper{margin:8px;padding:12px;font-size:10.5px;border-radius:6px;max-width:none}
+ .paper h1{font-size:15px}.paper h3{font-size:12px;margin-top:12px}.paper .meta{flex-direction:column;gap:6px}
+ .paper th,.paper td{padding:3px 4px;font-size:10px}.paper table.wide{min-width:560px}
+ .sbar{padding:8px 10px}.sbar .btn{padding:8px 12px;font-size:13px}.mseg button{padding:6px 11px;font-size:13px}}
 @media print{@page{size:A4;margin:14mm}body{background:#fff}body::before,.top,.app,.mbar,.sbar{display:none!important}#sheet{position:static;overflow:visible;background:#fff;padding:0}.paper{margin:0;padding:0;max-width:none;border-radius:0}}
 </style>
 </head>
 <body>
-<header class="top"><div class="brand">Tạo báo giá</div>
+<header class="top"><div class="menu"><button class="ibtn" id="menuBtn" aria-label="Menu">☰</button><div class="drop" id="drop" hidden><button data-view="quote">Báo giá</button><button data-view="admin">Quản trị</button></div></div><div class="brand">Tạo báo giá</div>
   <nav class="tabs"><button data-view="quote">Báo giá</button><button data-view="admin">Quản trị</button></nav>
   <button class="ibtn" id="theme" aria-label="Đổi sáng tối">◐</button></header>
 <main class="app">
@@ -138,7 +219,7 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
  <div class="main">
   <section class="card">
     <div class="crow"><select id="ti" aria-label="Xưng hô"><option>Anh</option><option>Chị</option><option>Cô</option><option>Chú</option><option>Công ty</option></select><input class="nm" id="cn" placeholder="Tên khách hàng"></div>
-    <div class="crow2"><input class="fld" id="cp" inputmode="tel" placeholder="Số điện thoại"><input class="fld" id="ca" placeholder="Địa chỉ lắp đặt"></div>
+    <button class="more" id="moreBtn">+ Số điện thoại, địa chỉ</button><div class="crow2" id="moreBox" hidden><input class="fld" id="cp" inputmode="tel" placeholder="Số điện thoại"><input class="fld" id="ca" placeholder="Địa chỉ lắp đặt"></div>
   </section>
   <div class="stats"><span>Tiết kiệm <b class="g" id="sv">—</b>/tháng</span><span>Hoàn vốn <b id="pb">—</b></span><span>Mái <b id="rf">—</b></span></div>
   <div class="segs">
@@ -160,21 +241,19 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
     <div class="sh"><span>Thi công &amp; dịch vụ</span><b id="subS">0</b></div>
     <div id="svc"></div>
     <div class="it sv">
-      <div class="pill ship"><span class="ic">🚚</span><select id="zone" aria-label="Khu vực vận chuyển"></select></div>
+      <div class="pill ship"><span class="ic">🚚</span><span class="brand" id="zlab"></span><span class="cv">⌄</span><select id="zone" aria-label="Khu vực vận chuyển"></select></div>
       <div class="stp km"><input id="km" type="number" min="0" value="0" inputmode="numeric" aria-label="Số km"><span>km</span></div>
       <div class="pr" id="zrw"></div><div class="lt" id="zt">0</div>
     </div>
   </section>
   <section class="card">
     <h2>Phương án trả góp</h2>
-    <label class="chk"><input type="checkbox" id="useIns"> Đưa vào báo giá</label>
+    <div style="display:flex;gap:14px;margin:-4px 0 4px"><button class="lnk" id="lAll">Bật tất cả</button><button class="lnk" id="lNone">Tắt tất cả</button></div>
     <div class="grid">
-      <div><label class="l" for="ln">Ngân hàng / quỹ</label><select class="fld" id="ln"></select></div>
-      <div><label class="l" for="lr">Lãi suất (%/năm)</label><input class="fld" id="lr" type="number" min="0" step="0.1"></div>
       <div><label class="l" for="ld">Trả trước (%)</label><input class="fld" id="ld" type="number" min="0" max="100" value="30"></div>
       <div><label class="l" for="lt">Kỳ hạn (tháng)</label><select class="fld" id="lt"><option>12</option><option>24</option><option selected>36</option><option>48</option><option>60</option></select></div>
     </div>
-    <div class="res" id="ins"></div>
+    <div id="ins"></div>
   </section>
  </div>
  <aside class="side"><div class="card sum">
@@ -197,7 +276,7 @@ label.l{font-size:13px;color:var(--mute);display:block;margin-bottom:4px}
   <div class="sticky"><button class="btn go" id="save">Lưu thay đổi</button><span id="st"></span></div>
 </div>
 </main>
-<div class="mbar" id="mbar"><div><small>Tổng sau thuế</small><b id="grand2"></b></div><button id="pc2">Xem bản in</button></div>
+<div class="mbar" id="mbar"><div><small>Tổng sau thuế</small><b id="grand2"></b></div><button id="pc2">↗ Xem bản in</button></div>
 <div id="sheet" hidden>
   <div class="sbar"><div class="mseg"><button data-m="customer">Khách hàng</button><button data-m="internal">Nội bộ</button></div><span class="sp"></span><span class="note" id="phint"></span><button class="btn go" id="doPrint">In / Lưu PDF</button><button class="btn" id="closeSheet">Đóng</button></div>
   <div id="print" class="paper"></div>
@@ -225,8 +304,8 @@ let CFG={
    ['Deye RW-M6.1 6.14kWh',30000000,'','','h'],['Sungrow SBR128 12.8kWh',78000000,'','','h'],['Huawei LUNA2000 10kWh',85000000,'','','h']])}],
  svc:[{k:'Tủ điện',p:0,u:''},{k:'Vật tư phụ (dây, giá đỡ, ống, thiết bị bảo vệ)',p:0,u:''},{k:'Lắp đặt',p:0,u:'kWp'}],
  zones:[{n:'Nội thành Hà Nội',r:10000},{n:'Ngoại thành Hà Nội',r:12000},{n:'Các tỉnh miền Bắc',r:14000},{n:'Miền Trung',r:16000},{n:'Miền Nam',r:18000}],
- lenders:[{n:'VPBank',r:12},{n:'Techcombank',r:11},{n:'TPBank',r:13},{n:'FE Credit',r:24},{n:'Home Credit',r:28},{n:'Quỹ / đơn vị khác',r:15}]};
-const TPL={items:()=>({n:'Sản phẩm mới',p:0,ph:'',g:'',v:'',w:0}),svc:()=>({k:'Hạng mục mới',p:0,u:''}),zones:()=>({n:'Khu vực mới',r:0}),lenders:()=>({n:'Đơn vị mới',r:12}),cats:()=>({id:'c'+Date.now(),title:'Nhóm vật tư mới',auto:0,qty:1,watt:0,items:[]})};
+ lenders:[{n:'VPBank',rates:[8,10,12],mx:60},{n:'Techcombank',rates:[9,11],mx:60},{n:'TPBank',rates:[10,12],mx:60},{n:'FE Credit',rates:[24],mx:48},{n:'Home Credit',rates:[28],mx:48},{n:'Quỹ / đơn vị khác',rates:[15],mx:60}]};
+const TPL={items:()=>({n:'Sản phẩm mới',p:0,ph:'',g:'',v:'',w:0}),svc:()=>({k:'Hạng mục mới',p:0,u:''}),zones:()=>({n:'Khu vực mới',r:0}),lenders:()=>({n:'Đơn vị mới',rates:[12],mx:60}),cats:()=>({id:'c'+Date.now(),title:'Nhóm vật tư mới',auto:0,qty:1,watt:0,items:[]})};
 
 /* ===== Trạng thái ===== */
 const S={ph:'1',gr:'g',vo:'l',bill:2500000,items:[],svc:[],zr:0,km:0,vat:0,vatT:0};let uid=0;
@@ -251,25 +330,38 @@ function fix(){
 const ICON={panel:'☀️',inv:'⚡',bat:'🔋'};
 function spec(c,o){if(c.watt&&o.w)return o.w+' W';const m=/(\d+(?:[.,]\d+)?)\s*(kWh|kW|W)\b/i.exec(o.n||'');return m?m[1]+' '+m[2]:'';}
 const stp=i=>`<div class="stp"><button data-act="dec" aria-label="Giảm">−</button><input data-f="qty" inputmode="numeric" value="${i.qty}" aria-label="Số lượng"><button data-act="inc" aria-label="Tăng">+</button></div>`;
-const prc=i=>`<div class="pr"><button class="pv" data-edit title="Sửa đơn giá">× ${sh(i.price)}</button>${i.price!==i.base?'<button class="rs" data-reset>↺ Giá hệ thống</button>':''}</div>`;
+const prc=i=>`<div class="pr"><button class="pv" data-edit title="Sửa đơn giá">× ${sh(i.price)}</button></div>`;
+const rst=i=>i.price!==i.base?'<button class="rs" data-reset>↺ Giá hệ thống</button>':'';
+const brand=n=>String(n).split(' ')[0];
 function renderMat(){
   let h='';
   CFG.cats.forEach(c=>{
     S.items.filter(i=>i.c===c.id).forEach(i=>{const o=c.items.find(x=>x.n===i.n)||{n:i.n};
-      h+=`<div class="it" data-id="${i.id}" data-l="i"><div class="pill ${esc(c.id)}"><span class="ic">${ICON[c.id]||'📦'}</span><select data-f="n" aria-label="${esc(c.title)}">${opts(c.id).map(x=>`<option ${x.n===i.n?'selected':''}>${esc(x.n)}</option>`).join('')}</select><span class="spec">${esc(spec(c,o))}</span></div>${stp(i)}${prc(i)}<div class="lt" data-t></div><button class="x" data-del aria-label="Xóa dòng">×</button></div>`;});
+      h+=`<div class="it" data-id="${i.id}" data-l="i"><div class="pill ${esc(c.id)}"><span class="ic">${ICON[c.id]||'📦'}</span><span class="brand">${esc(brand(i.n))}</span><span class="spec">${esc(spec(c,o))}</span><span class="cv">⌄</span><select data-f="n" aria-label="${esc(c.title)}">${opts(c.id).map(x=>`<option ${x.n===i.n?'selected':''}>${esc(x.n)}</option>`).join('')}</select></div>${stp(i)}${prc(i)}<div class="lt" data-t></div><button class="x" data-del aria-label="Xóa dòng">×</button><div class="cap"><span>${esc(i.n)}</span>${rst(i)}</div></div>`;});
     h+=`<button class="add" data-add="${esc(c.id)}">+ ${esc(c.title)}</button>`;});
   $('#mat').innerHTML=h;
-  $('#svc').innerHTML=S.svc.map(s=>`<div class="it sv" data-id="${s.id}" data-l="s"><div class="nm">${esc(s.k)}${s.u?` <small>(theo ${esc(s.u)})</small>`:''}</div>${s.u?`<div class="stp auto"><span data-auto>${nf(s.qty,1)} ${s.u==='kWp'?'kW':esc(s.u)}</span></div>`:stp(s)}${prc(s)}<div class="lt" data-t></div></div>`).join('');
+  $('#svc').innerHTML=S.svc.map(s=>`<div class="it sv" data-id="${s.id}" data-l="s"><div class="nm">${esc(s.k)}${s.u?` <small>(theo ${esc(s.u)})</small>`:''}</div>${s.u?`<div class="stp auto"><span data-auto>${nf(s.qty,1)} ${s.u==='kWp'?'kW':esc(s.u)}</span></div>`:stp(s)}${prc(s)}<div class="lt" data-t></div>${rst(s)?`<div class="cap"><span></span>${rst(s)}</div>`:''}</div>`).join('');
 }
-function updateZr(){$('#zrw').innerHTML=`<button class="pv" data-edit="zr" title="Sửa giá mỗi km">× ${sh(S.zr)}/km</button>`;}
+function updateZr(){$('#zlab').textContent=CFG.zones[$('#zone').value]?.n||'';$('#zrw').innerHTML=`<button class="pv" data-edit="zr" title="Sửa giá mỗi km">× ${sh(S.zr)}/km</button>`;}
 const pmt=(L,a,n)=>{const r=a/1200;return r?L*r/(1-Math.pow(1+r,-n)):L/n;};
 function totals(){
   const cur=curKw();S.svc.forEach(s=>{if(s.u==='kWp')s.qty=Math.round(cur*10)/10;});
   const mat=S.items.reduce((a,i)=>a+i.price*i.qty,0),sv=S.svc.reduce((a,s)=>a+s.price*s.qty,0),ship=S.zr*S.km,sub=mat+sv+ship,vat=sub*S.vat/100;
   return{cur,mat,sv,ship,sub,vat,grand:sub+vat};
 }
-function insInfo(){const t=totals(),dp=Math.min(100,Math.max(0,+$('#ld').value||0)),n=+$('#lt').value,ann=+$('#lr').value||0;
-  const pre=t.grand*dp/100,loan=t.grand-pre,m=pmt(loan,ann,n);return{name:$('#ln').selectedOptions[0]?.text||'',ann,dp,n,pre,loan,m,total:m*n+pre};}
+function sched(L,n,rates){let bal=L,int=0,pay=0;const pays=[];
+  for(let m=0;m<n;m++){const y=Math.floor(m/12),ra=+rates[Math.min(y,rates.length-1)]||0,r=ra/1200;
+    if(m%12===0){pay=pmt(bal,ra,n-m);pays.push(pay);}
+    const it=bal*r;int+=it;bal-=pay-it;}
+  return{pays,first:pays[0]||0,int,total:L+int};}
+const ratesTxt=r=>(r.every(v=>v===r[0])?nf(r[0])+'%/năm':r.map((v,i)=>`N${i+1}${i===r.length-1?'+':''}: ${nf(v)}%`).join(' · '));
+function insInfo(){const t=totals(),dp=Math.min(100,Math.max(0,+$('#ld').value||0)),n=+$('#lt').value,pre=t.grand*dp/100,loan=t.grand-pre;
+  const list=CFG.lenders.map(x=>{const rates=(x.rates&&x.rates.length?x.rates:[12]).map(Number),ok=n<=(+x.mx||60);return{name:x.n,rates,on:!!S.lon[x.n],ok,s:ok?sched(loan,n,rates):null};});
+  return{dp,n,pre,loan,list};}
+function renderIns(){const a=insInfo(),sel=a.list.filter(x=>x.on&&x.ok);
+  $('#ins').innerHTML=`<div class="note" style="margin:0 0 4px">Vay ${fmt(a.loan)} (trả trước ${a.dp}% = ${fmt(a.pre)}), kỳ hạn ${a.n} tháng. Bật phương án nào thì phương án đó được đưa vào bản in.</div>`+
+   a.list.map((x,i)=>`<label class="ln"><input type="checkbox" data-lon="${i}" ${x.on?'checked':''}><i></i><div class="lm"><b>${esc(x.name)}</b><small>${esc(ratesTxt(x.rates))}</small></div><div class="lp">${x.ok?`<b>${sh(x.s.first)}</b><small>/tháng${x.rates.length>1&&x.s.pays.length>1?' (năm 1)':''}</small>`:`<small>Tối đa ${CFG.lenders[i].mx||60} tháng</small>`}</div></label>`).join('');
+  const si=$('#sIns');si.hidden=!sel.length;if(sel.length)si.innerHTML=`<span>Trả góp (${sel.length} phương án)</span><b>từ ${fmt(Math.min(...sel.map(x=>x.s.first)))}/th</b>`;}
 function calc(){
   const t=totals(),c=CFG.calc;
   document.querySelectorAll('#vq [data-id]').forEach(r=>{const l=r.dataset.l==='s'?S.svc:S.items,i=l.find(x=>x.id==r.dataset.id);if(!i)return;
@@ -289,8 +381,7 @@ function calc(){
   $('#sv').textContent=t.cur>0?`${sh(lo)}–${sh(hi)}`:'—';
   $('#pb').textContent=yr>0&&t.grand>0?nf(t.grand/yr,1)+' năm':'—';
   $('#rf').textContent=t.cur>0?`${nf(t.cur*c.m2lo,1)} - ${nf(t.cur*c.m2hi,1)} m²`:'—';
-  const a=insInfo();$('#ins').innerHTML=`<b>${esc(a.name)}</b>: trả trước ${a.dp}% = <b>${fmt(a.pre)}</b>, vay ${fmt(a.loan)} trong ${a.n} tháng, mỗi tháng khoảng <b>${fmt(a.m)}</b>. Tổng chi trả dự kiến ${fmt(a.total)}.`;
-  const si=$('#sIns');si.hidden=!$('#useIns').checked;si.innerHTML=`<span>Trả góp mỗi tháng</span><b>${fmt(a.m)}</b>`;
+  renderIns();
 }
 function refresh(){document.querySelectorAll('.seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===S[s.dataset.k])));fix();renderMat();calc();}
 function setKw(kw){const c=wcat();if(!c||!(kw>0))return;let it=S.items.find(i=>i.c===c.id);if(!it){addItem(c.id,1);it=S.items.find(i=>i.c===c.id);}if(!it)return;
@@ -306,7 +397,7 @@ $('#vq').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
   if(d.add){addItem(d.add);renderMat();calc();return;}
   if(d.edit==='zr'){startEdit(b,S.zr,v=>{S.zr=v;updateZr();calc();});return;}
   const row=b.closest('[data-id]'),it=row&&find(row);if(!it)return;
-  if(d.act){it.qty=Math.max(row.dataset.l==='s'?0:1,it.qty+(d.act==='inc'?1:-1));row.querySelector('[data-f=qty]').value=it.qty;calc();}
+  if(d.act){if(d.act==='dec'&&row.dataset.l==='i'&&it.qty<=1){S.items=S.items.filter(x=>x!==it);renderMat();calc();return;}it.qty=Math.max(row.dataset.l==='s'?0:1,it.qty+(d.act==='inc'?1:-1));row.querySelector('[data-f=qty]').value=it.qty;calc();}
   else if(d.del!==undefined){S.items=S.items.filter(x=>x!==it);renderMat();calc();}
   else if(d.reset!==undefined){it.price=it.base;renderMat();calc();}
   else if(d.edit!==undefined)startEdit(b,it.price,v=>{it.price=v;renderMat();calc();});});
@@ -320,18 +411,19 @@ $('#bill').addEventListener('input',e=>{const n=+e.target.value.replace(/\D/g,''
 $('#zone').onchange=()=>{S.zr=CFG.zones[$('#zone').value]?.r||0;updateZr();calc();};
 $('#km').addEventListener('input',e=>{S.km=Math.max(0,+e.target.value||0);calc();});
 $('#vat').addEventListener('input',e=>{S.vat=Math.max(0,+e.target.value||0);S.vatT=1;calc();});
-$('#ln').onchange=()=>{$('#lr').value=CFG.lenders[$('#ln').value]?.r||0;calc();};
-['#lr','#ld','#useIns'].forEach(s=>$(s).addEventListener('input',calc));$('#lt').addEventListener('change',calc);
+S.lon={};
+$('#ins').addEventListener('change',e=>{const k=e.target.dataset.lon;if(k===undefined)return;S.lon[CFG.lenders[k].n]=e.target.checked;calc();});
+$('#lAll').onclick=()=>{CFG.lenders.forEach(x=>S.lon[x.n]=true);calc();};$('#lNone').onclick=()=>{S.lon={};calc();};
+$('#ld').addEventListener('input',calc);$('#lt').addEventListener('change',calc);
 
 function applyCfg(){
   const old=S.svc;
   S.svc=CFG.svc.map(s=>{const o=old.find(x=>x.k===s.k);return{id:o?o.id:++uid,k:s.k,u:s.u||'',base:+s.p||0,price:o&&o.price!==o.base?o.price:(+s.p||0),qty:o?o.qty:1};});
   if(!S.vatT){S.vat=+CFG.calc.vat||0;}$('#vat').value=S.vat;
-  const z=+$('#zone').value||0,l=+$('#ln').value||0;
+  const z=+$('#zone').value||0;
   $('#zone').innerHTML=CFG.zones.map((x,i)=>`<option value="${i}">${esc(x.n)}</option>`).join('');
-  $('#ln').innerHTML=CFG.lenders.map((x,i)=>`<option value="${i}">${esc(x.n)}</option>`).join('');
-  $('#zone').value=Math.min(z,CFG.zones.length-1);$('#ln').value=Math.min(l,CFG.lenders.length-1);
-  S.zr=CFG.zones[$('#zone').value]?.r||0;updateZr();$('#lr').value=CFG.lenders[$('#ln').value]?.r||0;
+  $('#zone').value=Math.min(z,CFG.zones.length-1);
+  S.zr=CFG.zones[$('#zone').value]?.r||0;updateZr();
   if(!$('#bill').value)$('#bill').value=S.bill.toLocaleString('vi-VN');
   refresh();
 }
@@ -351,11 +443,12 @@ function build(mode){
   let h=`<div class="meta"><div><h1>${esc(co.name)}</h1><div>${esc(co.addr)} ${co.phone?'· ĐT: '+esc(co.phone):''}</div></div>${int?'<div><span class="tag">BẢN NỘI BỘ - KHÔNG GỬI KHÁCH</span></div>':''}</div>
   <div class="meta"><div><b style="font-size:15px">BÁO GIÁ HỆ THỐNG ĐIỆN NĂNG LƯỢNG MẶT TRỜI</b><br>Ngày: ${d}</div></div>
   <div class="meta"><div><b>Khách hàng:</b> ${esc($('#ti').value)} ${esc($('#cn').value||'-')}<br><b>Điện thoại:</b> ${esc($('#cp').value||'-')}<br><b>Địa chỉ:</b> ${esc($('#ca').value||'-')}</div><div><b>Cấu hình:</b><br>${cfgT}</div></div>
-  <h3>Chi tiết báo giá</h3><table><tr>${head}</tr>${rows}${tr('TẠM TÍNH',fmt(t.sub))}${S.vat>0?tr(`VAT (${nf(S.vat)}%)`,fmt(t.vat)):''}${tr('TỔNG SAU THUẾ',fmt(t.grand),'tt')}</table>`;
+  <h3>Chi tiết báo giá</h3><div class="tw"><table class="${int?'wide':''}"><tr>${head}</tr>${rows}${tr('TẠM TÍNH',fmt(t.sub))}${S.vat>0?tr(`VAT (${nf(S.vat)}%)`,fmt(t.vat)):''}${tr('TỔNG SAU THUẾ',fmt(t.grand),'tt')}</table></div>`;
   if(int)h+=`<h3>Tổng hợp chênh lệch giá</h3><table><tr><td>Tạm tính theo giá hệ thống</td><td class="r">${fmt(t.sub-diff)}</td></tr><tr><td>Tạm tính theo giá đã chỉnh</td><td class="r">${fmt(t.sub)}</td></tr>
    <tr class="tt"><td>Tổng chênh lệch (đã chỉnh − giá hệ thống)</td><td class="r ${diff>=0?'up':'dn'}">${diff>0?'+':''}${fmt(diff)}</td></tr></table>`;
-  if($('#useIns').checked)h+=`<h3>Phương án trả góp</h3><table><tr><td>Đơn vị</td><td class="r">${esc(a.name)} (${a.ann}%/năm)</td></tr><tr><td>Trả trước (${a.dp}%)</td><td class="r">${fmt(a.pre)}</td></tr>
-   <tr><td>Số tiền vay / kỳ hạn</td><td class="r">${fmt(a.loan)} / ${a.n} tháng</td></tr><tr class="tt"><td>Trả hằng tháng (ước tính)</td><td class="r">${fmt(a.m)}</td></tr></table>`;
+  const sel=a.list.filter(x=>x.on&&x.ok);
+  if(sel.length){const pt=x=>x.s.pays.length>1&&x.s.pays.some(p=>Math.round(p)!==Math.round(x.s.pays[0]))?x.s.pays.map((p,i)=>`Năm ${i+1}: ${fmt(p)}`).join('<br>'):fmt(x.s.first);
+   h+=`<h3>Phương án trả góp</h3><p style="margin:0 0 6px">Giá trị ${fmt(t.grand)} · Trả trước ${a.dp}% = ${fmt(a.pre)} · Vay ${fmt(a.loan)} · Kỳ hạn ${a.n} tháng</p><div class="tw"><table><tr><th>Đơn vị / lãi suất</th><th class="r">Trả hằng tháng</th><th class="r">Tổng lãi</th><th class="r">Tổng gốc + lãi</th></tr>${sel.map(x=>`<tr><td><b>${esc(x.name)}</b><br><span style="color:#555">${esc(ratesTxt(x.rates))}</span></td><td class="r">${pt(x)}</td><td class="r">${fmt(x.s.int)}</td><td class="r">${fmt(x.s.total)}</td></tr>`).join('')}</table></div><p style="font-size:10px;color:#555;margin:4px 0 0">Số liệu ước tính theo dư nợ giảm dần, thực tế theo hồ sơ duyệt của đơn vị tài chính.</p>`;}
   return h+(co.note?`<p style="margin-top:14px;font-size:11px;color:#444">${esc(co.note)}</p>`:'');
 }
 let mode='customer';
@@ -385,7 +478,7 @@ function renderAdmin(){
   h+=`<section class="card"><h2>Thi công và dịch vụ</h2>`+CFG.svc.map((o,i)=>`<div class="arow s3">${inp(`svc.${i}.k`,o.k)}${inp(`svc.${i}.p`,o.p,1)}${sel(`svc.${i}.u`,o.u||'',[['','Tính theo gói / cái'],['kWp','Tính theo kWp']])}<button class="x" data-del="svc" data-i="${i}" aria-label="Xóa">×</button></div>`).join('')+`<div class="note">Cột: tên hạng mục, đơn giá mặc định (₫), cách tính. “Theo kWp” tự lấy số lượng bằng công suất hệ thống.</div><button class="add" data-add="svc">+ Thêm hạng mục</button></section>`;
   const lst=(title,key,a,b,note,addl)=>`<section class="card"><h2>${title}</h2>`+CFG[key].map((o,i)=>`<div class="arow s2">${inp(`${key}.${i}.${a}`,o[a])}${inp(`${key}.${i}.${b}`,o[b],1)}<button class="x" data-del="${key}" data-i="${i}" aria-label="Xóa">×</button></div>`).join('')+`<div class="note">${note}</div><button class="add" data-add="${key}">${addl}</button></section>`;
   h+=lst('Vận chuyển theo khu vực','zones','n','r','Cột: khu vực, giá mỗi km (₫).','+ Thêm khu vực');
-  h+=lst('Quỹ / ngân hàng trả góp','lenders','n','r','Cột: tên đơn vị, lãi suất (%/năm).','+ Thêm đơn vị');
+  h+=`<section class="card"><h2>Quỹ / ngân hàng trả góp</h2>`+CFG.lenders.map((o,i)=>`<div class="arow s3">${inp(`lenders.${i}.n`,o.n)}${inp(`lenders.${i}.mx`,o.mx,1)}<span class="base2">tối đa (tháng)</span><button class="x" data-del="lenders" data-i="${i}" aria-label="Xóa">×</button></div><div class="yrs">${o.rates.map((r,k)=>`<div><label class="l">Năm ${k+1} (%)</label>${inp(`lenders.${i}.rates.${k}`,r,1)}</div>`).join('')}<div class="yb"><button class="add" data-add="lenders.${i}.rates">+ Năm</button>${o.rates.length>1?`<button class="add" data-del="lenders.${i}.rates" data-i="${o.rates.length-1}">− Năm</button>`:''}</div></div>`).join('')+`<div class="note">Cột trên: tên đơn vị, kỳ hạn tối đa. Lãi suất nhập theo từng năm vay, năm cuối được áp dụng cho các năm còn lại.</div><button class="add" data-add="lenders">+ Thêm ngân hàng / quỹ</button></section>`;
   $('#admin').innerHTML=h;
 }
 const getp=p=>p.split('.').reduce((o,k)=>o[k],CFG);
@@ -394,7 +487,7 @@ $('#admin').addEventListener('input',e=>{const p=e.target.dataset.p;if(!p)return
   const cb=e.target.type==='checkbox';o[l]=cb?(e.target.checked?1:0):e.target.dataset.n?(+e.target.value||0):e.target.value;mark();if(cb)renderAdmin();});
 $('#admin').addEventListener('change',e=>{if(e.target.tagName==='SELECT')e.target.dispatchEvent(new Event('input',{bubbles:true}));});
 $('#admin').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
-  if(d.add){getp(d.add).push(TPL[d.add.split('.').pop()]());renderAdmin();mark();}
+  if(d.add){const ar=getp(d.add),kk=d.add.split('.').pop();ar.push(kk==='rates'?(+ar[ar.length-1]||12):TPL[kk]());renderAdmin();mark();}
   if(d.del){if(!confirm('Xóa mục này?'))return;getp(d.del).splice(+d.i,1);renderAdmin();mark();}});
 async function save(){
   const json=JSON.stringify(CFG),st=$('#st');
@@ -407,15 +500,18 @@ $('#save').onclick=save;
 
 /* ===== Điều hướng, giao diện, dữ liệu ===== */
 function view(){const a=location.hash==='#admin';$('#vq').hidden=a;$('#va').hidden=!a;$('#mbar').hidden=a;
-  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',(b.dataset.view==='admin')===a));if(a&&!dirty)renderAdmin();}
-document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{if(b.dataset.view==='admin')location.hash='admin';else{history.replaceState(null,'',location.pathname+location.search);}view();scrollTo(0,0);});
+  document.querySelectorAll('.tabs button,.drop button').forEach(b=>b.classList.toggle('on',(b.dataset.view==='admin')===a));if(a&&!dirty)renderAdmin();}
+document.querySelectorAll('.tabs button,.drop button').forEach(b=>b.onclick=()=>{if(b.dataset.view==='admin')location.hash='admin';else{history.replaceState(null,'',location.pathname+location.search);}view();scrollTo(0,0);});
 addEventListener('hashchange',view);
+$('#menuBtn').onclick=e=>{e.stopPropagation();$('#drop').hidden=!$('#drop').hidden;};
+document.addEventListener('click',()=>{$('#drop').hidden=true;});
+$('#moreBtn').onclick=()=>{$('#moreBox').hidden=!$('#moreBox').hidden;};
 $('#theme').onclick=()=>{const r=document.documentElement,n=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=n;try{localStorage.setItem('solar-theme',n);}catch(e){}};
 function load(j){try{const c=JSON.parse(j);if(c&&c.cats&&c.svc&&c.zones&&c.lenders){
   c.calc={...DEFCALC,...(c.calc||{})};
   c.cats.forEach(x=>{if(x.watt===undefined){x.watt=x.id==='panel'?1:0;x.items.forEach(o=>{if(o.w===undefined){const m=/(\d{3,4})\s*W/i.exec(o.n);o.w=x.watt&&m?+m[1]:0;}});}});
   c.svc.forEach(s=>{if(s.u===undefined)s.u=/lắp đặt/i.test(s.k)?'kWp':'';});
-  CFG=c;return true;}}catch(e){}return false;}
+  c.lenders.forEach(x=>{if(!x.rates)x.rates=[+x.r||12];if(!x.mx)x.mx=60;});CFG=c;return true;}}catch(e){}return false;}
 try{const j=localStorage.getItem('solar-cfg');if(j)load(j);}catch(e){}
 applyCfg();view();
 (async()=>{
